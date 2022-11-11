@@ -1,23 +1,35 @@
+import json
 from rest_framework import viewsets
+from django.http import HttpResponse
 from forms.serializers import (
-    FormQuestionTypeSerializer,
     ApplicationFormConfigurationSerializer
 )
 from forms.models import (
-    FormQuestionType,
     ApplicationFormConfiguration,
 )
+from forms.templates import APPLICATION_FORM_TEMPLATE_CONFIG
+
+from forms.const import FORM_QUESTION_TYPES
 
 
-class ApplicationFormTemplateViewSet(viewsets.ModelViewSet):
-    queryset = ApplicationFormConfiguration.objects.filter(is_template=True)
+class ApplicationFormViewSet(viewsets.ModelViewSet):
     serializer_class = ApplicationFormConfigurationSerializer
 
+    # def retrieve(self, request, *args, **kwargs):
+    #     form_uuid = request.GET['form_uuid']
+    #     queryset = ApplicationFormConfiguration.objects.get(uuid=form_uuid)
+    #     return Response(self.serializer_class(queryset).data)
 
-class FormQuestionTypeViewSet(viewsets.ModelViewSet):
-    queryset = FormQuestionType.objects.all()
-    serializer_class = FormQuestionTypeSerializer
+
+def form_templates(*args, **kwargs):
+    return HttpResponse(
+        content=json.dumps({'template': APPLICATION_FORM_TEMPLATE_CONFIG}),
+        content_type='application/json',
+    )
 
 
-def create_new_form():
-    return []
+def form_question_types(*args, **kwargs):
+    return HttpResponse(
+        content=json.dumps({'types': FORM_QUESTION_TYPES}),
+        content_type='application/json',
+    )
