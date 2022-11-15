@@ -1,6 +1,5 @@
 import json
 from rest_framework import viewsets
-from rest_framework.reverse import reverse
 from rest_framework.response import Response
 from django.http import HttpResponse
 from forms.serializers import (
@@ -14,6 +13,7 @@ from forms.templates import APPLICATION_FORM_TEMPLATE_CONFIG
 from forms.const import FORM_QUESTION_TYPES
 from forms.schemas import CreateFormConfigSchema
 from pydantic.error_wrappers import ValidationError
+from tenantrace_api.mailer import send_application_response_email
 
 
 class ApplicationFormViewSet(viewsets.ModelViewSet):
@@ -51,7 +51,7 @@ class ApplicationFormViewSet(viewsets.ModelViewSet):
         if not config:
             return HttpResponse(
                 status=404,
-                content="Configuration not found"
+                content=json.dumps({"error": "Configuration not found"})
             )
 
         response_object = ApplicationFormResponse(
@@ -59,8 +59,13 @@ class ApplicationFormViewSet(viewsets.ModelViewSet):
             value=response_data
         )
         response_object.save()
-        # send email
-        return HttpResponse(status=200)
+
+        try:
+            send_application_response_email(config.owner_email, response_object)
+        except Exception as e:
+            return HttpResponse(status=400, content=json.dumps({"error": e}))
+
+        return HttpResponse(status=200, content=json.dumps({"success": True}))
 
 
 def form_templates(*args, **kwargs):
