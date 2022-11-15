@@ -8,4 +8,4 @@ class ApplicationFormConfigurationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ApplicationFormConfiguration
-        fields = ('config',)
+        fields = ('config', 'uuid')

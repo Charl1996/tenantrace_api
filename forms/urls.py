@@ -1,17 +1,19 @@
-from django.urls import path, include
-from rest_framework import routers
+from django.urls import path
 from forms.views import (
     form_question_types,
     form_templates,
     ApplicationFormViewSet,
 )
 
-router = routers.DefaultRouter()
-router.register(r'', ApplicationFormViewSet, basename="create_form_config")
-# router.register(r'(?P<form_uuid>\d+)/$', ApplicationFormViewSet, basename="retrieve_form_by_id")
+form_config = ApplicationFormViewSet.as_view({'post': 'create'})
+form_config_detail = ApplicationFormViewSet.as_view({
+    'get': 'retrieve'
+})
+
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', form_config, name="form-config"),
+    path('<uuid:uuid>', form_config_detail, name="form-config-detail"),
     path('templates', form_templates),
     path('question-types', form_question_types),
 ]
