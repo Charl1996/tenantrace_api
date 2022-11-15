@@ -7,7 +7,8 @@ from forms.views import (
 
 form_config = ApplicationFormViewSet.as_view({'post': 'create'})
 form_config_detail = ApplicationFormViewSet.as_view({
-    'get': 'retrieve'
+    'get': 'retrieve',
+    'post': 'add_response',
 })
 
 

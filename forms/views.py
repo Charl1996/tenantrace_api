@@ -8,6 +8,7 @@ from forms.serializers import (
 )
 from forms.models import (
     ApplicationFormConfiguration,
+    ApplicationFormResponse,
 )
 from forms.templates import APPLICATION_FORM_TEMPLATE_CONFIG
 from forms.const import FORM_QUESTION_TYPES
@@ -41,6 +42,25 @@ class ApplicationFormViewSet(viewsets.ModelViewSet):
         form_uuid = kwargs['uuid']
         queryset = ApplicationFormConfiguration.objects.get(uuid=form_uuid)
         return Response(self.serializer_class(queryset).data)
+
+    def add_response(self, request, *args, **kwargs):
+        response_data = request.data.get('response')
+        config_uuid = str(kwargs['uuid'])
+        config = ApplicationFormConfiguration.objects.get(uuid=config_uuid)
+
+        if not config:
+            return HttpResponse(
+                status=404,
+                content="Configuration not found"
+            )
+
+        response_object = ApplicationFormResponse(
+            application_form_configuration=config,
+            value=response_data
+        )
+        response_object.save()
+        # send email
+        return HttpResponse(status=200)
 
 
 def form_templates(*args, **kwargs):
