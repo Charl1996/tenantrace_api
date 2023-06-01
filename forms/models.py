@@ -3,7 +3,7 @@ import uuid
 
 
 class ApplicationFormConfiguration(models.Model):
-    config = models.JSONField()
+     config = models.JSONField()
     owner_email = models.EmailField()
     uuid = models.UUIDField(default=uuid.uuid4)
 
