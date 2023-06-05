@@ -1,0 +1,5 @@
+repos:
+-   repo: https://github.com/Charl1996/tenantrace_api
+    rev: 38e92af81c1484d9a21474395cbcda5d43b06077
+    hooks:
+    -   id: flake8
