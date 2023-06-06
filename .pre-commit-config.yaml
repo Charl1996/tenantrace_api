@@ -1,5 +1,5 @@
 repos:
 -   repo: https://github.com/Charl1996/tenantrace_api
-    rev: "{{ GITHUB_SHA }}"
+    rev: v0.1
     hooks:
     -   id: flake8
