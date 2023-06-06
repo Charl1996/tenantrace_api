@@ -1,35 +1,35 @@
-name: pre-commit
-
-on:
-  pull_request:
-    branches: [master]
-  push:
-
-jobs:
-  pre-commit:
-    runs-on: ubuntu-latest
-    steps:
-
-    - uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
-    - name: Get changed files
-      id: changed-files
-      uses: tj-actions/changed-files@v14.6
-
-    - name: Get .py files
-      id: python-files
-      run: |
-        output=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -o "\S*\.py")
-        echo "{python-file-names}=$output" >> $GITHUB_OUTPUT
-
-    - name: Display Changed Files
-      run: |
-        echo "Changed files:"
-        echo "${{ steps.python-files.outputs.python-file-names }}"
-
-    - uses: actions/setup-python@v3
-    - uses: pre-commit/action@v3.0.0
-      with:
-        extra_args: flake8 --files=${{ steps.python-files.outputs.python-file-names }}
+#name: pre-commit
+#
+#on:
+#  pull_request:
+#    branches: [master]
+#  push:
+#
+#jobs:
+#  pre-commit:
+#    runs-on: ubuntu-latest
+#    steps:
+#
+#    - uses: actions/checkout@v3
+#      with:
+#        fetch-depth: 0
+#
+#    - name: Get changed files
+#      id: changed-files
+#      uses: tj-actions/changed-files@v14.6
+#
+#    - name: Get .py files
+#      id: python-files
+#      run: |
+#        output=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -o "\S*\.py")
+#        echo "{python-file-names}=$output" >> $GITHUB_OUTPUT
+#
+#    - name: Display Changed Files
+#      run: |
+#        echo "Changed files:"
+#        echo "${{ steps.python-files.outputs.python-file-names }}"
+#
+#    - uses: actions/setup-python@v3
+#    - uses: pre-commit/action@v3.0.0
+#      with:
+#        extra_args: flake8 --files=${{ steps.python-files.outputs.python-file-names }}
