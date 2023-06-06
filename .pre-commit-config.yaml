@@ -1,8 +1,11 @@
+ci:
+    autofix_prs: false
+
 repos:
 -   repo: https://github.com/PyCQA/flake8
     rev: 6.0.0
     hooks:
     -   id: flake8
-        pass_filenames: false
+        pass_filenames: true
         files: $(git diff --name-only master HEAD -- "*.py" | xargs)
         args: [$(git diff --name-only master HEAD -- "*.py" | xargs)]
