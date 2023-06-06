@@ -6,4 +6,9 @@ repos:
     rev: 6.0.0
     hooks:
     -   id: flake8
-        entry: git diff --name-only origin/master HEAD -- "*.py" | xargs flake8
+        args: [--from-ref HEAD^^^ --to-ref HEAD]
+##        entry: git diff --name-only origin/master HEAD -- "*.py" | xargs flake8
+#        pass_filenames: true
+#        types:
+#            - file
+#            - python
