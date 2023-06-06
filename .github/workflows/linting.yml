@@ -22,7 +22,12 @@ jobs:
         PR_NUMBER="${{ github.event.pull_request.number }}"
         API_URL="https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER}/files"
         RESPONSE=$(curl -s -H "Authorization: Bearer ${TOKEN}" "${API_URL}")
-        CHANGED_FILES=$(echo "${RESPONSE}" | jq -r '.[] | .filename')
+        CHANGED_FILES=""
+        while IFS= read -r line; do
+          file=$(echo "$line" | grep -oP '(?<="filename": ")[^"]*')
+          CHANGED_FILES+="${file}\n"
+        done <<< "${RESPONSE}"
+
         echo "::set-output name=changed_files::${CHANGED_FILES}"
 
     - name: Display Changed Files
