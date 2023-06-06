@@ -24,12 +24,6 @@ jobs:
         output=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -o "\S*\.py")
         echo "{python-file-names}={$output}" >> $GITHUB_OUTPUT
 
-#    - name: Get .js files
-#      id: javascript-files
-#      run: |
-#        output=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -o "\S*\.js")
-#        echo "::set-output name=javascript-file-names::$output"
-
     - name: Display Changed Files
       run: |
         echo "Changed files:"
