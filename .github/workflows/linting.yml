@@ -11,6 +11,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - uses: actions/setup-python@v3
-    - uses: pre-commit/action@v3.0.0
-      with:
-        extra_args: flake8 --from-ref ${{ github.base_ref }} --to-ref ${{ github.head_ref }} --files $(git diff --name-only ${{ github.base_ref }} ${{ github.head_ref }})
+
+    - name: Install pre-commit
+      run: pip install pre-commit
+
+    - name: Run pre-commit on changed files
+      run: pre-commit run --from-ref ${{ github.base_ref }} --to-ref ${{ github.head_ref }} --files $(git diff --name-only ${{ github.base_ref }} ${{ github.head_ref }})
