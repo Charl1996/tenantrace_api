@@ -3,4 +3,4 @@ repos:
     rev: 6.0.0
     hooks:
     -   id: flake8
-        args: [git diff --name-only master HEAD -- "*.py" | xargs]
+        files: $(git diff --name-only master HEAD -- "*.py" | xargs)
