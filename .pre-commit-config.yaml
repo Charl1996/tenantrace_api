@@ -5,3 +5,4 @@ repos:
     -   id: flake8
         pass_filenames: false
         files: $(git diff --name-only master HEAD -- "*.py" | xargs)
+        args: [$(git diff --name-only master HEAD -- "*.py" | xargs)]
