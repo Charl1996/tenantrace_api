@@ -17,25 +17,26 @@ jobs:
 
     - name: Get changed files
       id: changed-files
-      run: |
-        TOKEN="${{ secrets.GITHUB_TOKEN }}"
-        PR_NUMBER="${{ github.event.pull_request.number }}"
-        API_URL="https://api.github.com/repos/${{ github.repository }}/pulls/${PR_NUMBER}/files"
-        RESPONSE=$(curl -s -H "Authorization: Bearer ${TOKEN}" "${API_URL}")
-        CHANGED_FILES=""
-        while IFS= read -r line; do
-          file=$(echo "$line" | grep -oP '(?<="filename": ")[^"]*')
-          CHANGED_FILES+="${file}\n"
-        done <<< "${RESPONSE}"
+      uses: tj-actions/changed-files@v14.6
 
-        echo "::set-output name=changed_files::${CHANGED_FILES}"
+    - name: Get .py files
+      id: python-files
+      run: |
+        output=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -o "\S*\.py")
+        echo "::set-output name=python-file-names::$output"
+
+    - name: Get .js files
+      id: javascript-files
+      run: |
+        output=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -o "\S*\.js")
+        echo "::set-output name=javascript-file-names::$output"
 
     - name: Display Changed Files
       run: |
         echo "Changed files:"
-        echo "${{ steps.changed-files.outputs.changed_files }}"
+        echo "${{ steps.python-files.outputs.python-file-names }}"
 
     - uses: actions/setup-python@v3
     - uses: pre-commit/action@v3.0.0
       with:
-        extra_args: flake8 --files=${{ steps.changed-files.outputs.changed_files }}
+        extra_args: flake8 --files=${{ steps.python-files.outputs.python-file-names }}
