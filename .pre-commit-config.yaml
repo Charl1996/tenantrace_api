@@ -6,4 +6,4 @@ repos:
     rev: 6.0.0
     hooks:
     -   id: flake8
-        entry: flake8 $(git diff --name-only master HEAD -- "*.py" | xargs)
+        entry: git diff --name-only master HEAD -- "*.py" | xargs flake8
