@@ -22,7 +22,7 @@ jobs:
       id: python-files
       run: |
         output=$(echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -o "\S*\.py")
-        echo "{python-file-names}={$output}" >> $GITHUB_OUTPUT
+        echo "{python-file-names}=$output" >> $GITHUB_OUTPUT
 
     - name: Display Changed Files
       run: |
