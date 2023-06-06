@@ -15,5 +15,8 @@ jobs:
     - name: Install pre-commit
       run: pip install pre-commit
 
+    - name: Fetch origin
+      run: git fetch origin
+
     - name: Run pre-commit on changed files
-      run: pre-commit run --from-ref ${{ github.event.pull_request.base.ref }} --to-ref ${{ github.event.pull_request.head.sha }}
+      run: pre-commit run --from-ref origin/${{ github.event.pull_request.base.ref }} --to-ref ${{ github.event.pull_request.head.sha }}
