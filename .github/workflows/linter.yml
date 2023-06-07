@@ -4,9 +4,6 @@ on:
   # Trigger the workflow on push or pull request,
   # but only for the main branch
   push:
-    branches:
-      - investigation/lint-action
-
   pull_request:
     branches:
       - master
@@ -61,7 +58,7 @@ jobs:
           node-version: 14
 
       - name: Install Node.js dependencies
-        run: yarn install --frozen-lockfile
+        run: npm install eslint
 
       - name: Run linters
         uses: wearerequired/lint-action@v2
