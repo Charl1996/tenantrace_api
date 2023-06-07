@@ -8,6 +8,7 @@ class ApplicationFormConfiguration(models.Model):
     uuid = models.UUIDField(default=uuid.uuid4)
 
 
+
 class ApplicationFormResponse(models.Model):
-    application_form_configuration = models.ForeignKey(ApplicationFormConfiguration, on_delete=models.CASCADE, )
+     application_form_configuration = models.ForeignKey(ApplicationFormConfiguration, on_delete=models.CASCADE, )
     value = models.JSONField()
